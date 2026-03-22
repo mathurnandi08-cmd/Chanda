@@ -493,7 +493,7 @@ import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, dele
  *    OR check Firebase Console → Authentication → Users → copy your UID.
  * 3. Paste it below.
  */
-const SUPER_ADMIN_UID = 'YOUR_FIREBASE_UID_HERE'; // ← Replace with your UID
+const SUPER_ADMIN_UID = '7YYwM5y6kld2Q0JzAHYw2TlGucF2'; // ← Replace with your UID
 
 // Firebase project config
 const firebaseConfig = {
@@ -885,7 +885,7 @@ function renderYearBtns() {
 /** Render action buttons for admin/subadmin roles */
 function renderAdminControls() {
   const el = document.getElementById('adminControls');
-  const sa = S.role === 'superadmin';
+  const sa = (S.user && S.user.uid === '7YYwM5y6kld2Q0JzAHYw2TlGucF2') || S.role === 'superadmin';
   const ca = sa || S.role === 'subadmin';
 
   el.innerHTML = '';
@@ -1306,6 +1306,7 @@ onAuthStateChanged(auth, async user => {
     const roleData = await resolveRole(user.uid);
     S.role     = roleData.role;
     S.memberId = roleData.memberId || null;
+    if (user.uid === '7YYwM5y6kld2Q0JzAHYw2TlGucF2') S.role = 'superadmin';
 
     // For members: try to auto-find their memberId by matching phone
     if (S.role === 'member' && !S.memberId && user.phoneNumber) {
